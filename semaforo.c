@@ -147,13 +147,8 @@ void vBuzzerTask() {
 
 void vDisplayTask() {
     while (true) {
-        ssd1306_fill(&ssd, !cor);                        // Limpa o display
-        // Desenha o o semáforo
-        ssd1306_rect(&ssd, 3, 3, 122, 60, cor, !cor);    // Desenha um retângulo
-        ssd1306_line(&ssd, 20, 7, 45, 7, cor);           // Desenha uma linha
-        ssd1306_line(&ssd, 20, 7, 20, 57, cor);          // Desenha uma linha
-        ssd1306_line(&ssd, 20, 57, 45, 57, cor);         // Desenha uma linha
-        ssd1306_line(&ssd, 45, 7, 45, 57, cor);          // Desenha uma linha
+        // Limpa o display
+        ssd1306_fill(&ssd, !cor);
 
         if(normalModeOn) {
             ssd1306_rect(&ssd, 12, 28, 11, 10, cor, activatedLed == 0 ? cor : !cor);
@@ -179,13 +174,37 @@ void vDisplayTask() {
 void vLedMatrixTask() {
     while(true) {
         if(normalModeOn) {
+            set_pixel_color(5, 0, activatedLed == 0 ? 0.1 : 0, 0);
+            set_pixel_color(6, 0, activatedLed == 0 ? 0.1 : 0, 0);
             set_pixel_color(7, 0, activatedLed == 0 ? 0.1 : 0, 0);
+            set_pixel_color(8, 0, activatedLed == 0 ? 0.1 : 0, 0);
+            set_pixel_color(9, 0, activatedLed == 0 ? 0.1 : 0, 0);
+            set_pixel_color(10, activatedLed == 1 ? 0.1 : 0, activatedLed == 1 ? 0.1 : 0, 0);
+            set_pixel_color(11, activatedLed == 1 ? 0.1 : 0, activatedLed == 1 ? 0.1 : 0, 0);
             set_pixel_color(12, activatedLed == 1 ? 0.1 : 0, activatedLed == 1 ? 0.1 : 0, 0);
+            set_pixel_color(13, activatedLed == 1 ? 0.1 : 0, activatedLed == 1 ? 0.1 : 0, 0);
+            set_pixel_color(14, activatedLed == 1 ? 0.1 : 0, activatedLed == 1 ? 0.1 : 0, 0);
+            set_pixel_color(15, activatedLed == 2 ? 0.1 : 0, 0, 0);
+            set_pixel_color(16, activatedLed == 2 ? 0.1 : 0, 0, 0);
             set_pixel_color(17, activatedLed == 2 ? 0.1 : 0, 0, 0);
+            set_pixel_color(18, activatedLed == 2 ? 0.1 : 0, 0, 0);
+            set_pixel_color(19, activatedLed == 2 ? 0.1 : 0, 0, 0);
         } else {
+            set_pixel_color(5, 0, 0, 0);
+            set_pixel_color(6, 0, 0, 0);
             set_pixel_color(7, 0, 0, 0);
+            set_pixel_color(8, 0, 0, 0);
+            set_pixel_color(9, 0, 0, 0);
+            set_pixel_color(10, 1, 1, 0);
+            set_pixel_color(11, 1, 1, 0);
             set_pixel_color(12, 1, 1, 0);
+            set_pixel_color(13, 1, 1, 0);
+            set_pixel_color(14, 1, 1, 0);
+            set_pixel_color(15, 0, 0, 0);
+            set_pixel_color(16, 0, 0, 0);
             set_pixel_color(17, 0, 0, 0);
+            set_pixel_color(18, 0, 0, 0);
+            set_pixel_color(19, 0, 0, 0);
         }
         draw_matrix(pio, sm);
         vTaskDelay(1);
@@ -225,9 +244,7 @@ int main() {
     pwm_set_chan_level(slice_num, pwm_gpio_to_channel(21), wrap / 2);
 
     // Configuração Display
-    // I2C Initialisation. Using it at 400Khz.
     i2c_init(I2C_PORT, 400 * 1000);
-
     gpio_set_function(I2C_SDA, GPIO_FUNC_I2C);                    
     gpio_set_function(I2C_SCL, GPIO_FUNC_I2C);                    
     gpio_pull_up(I2C_SDA);
@@ -255,11 +272,11 @@ int main() {
     );
     xTaskCreate(
         vDisplayTask, "Tarefa Display", configMINIMAL_STACK_SIZE, 
-        NULL, tskIDLE_PRIORITY + 1, NULL
+        NULL, tskIDLE_PRIORITY, NULL
     );
     xTaskCreate(
         vLedMatrixTask, "Tarefa Matriz de leds", configMINIMAL_STACK_SIZE, 
-        NULL, tskIDLE_PRIORITY + 1, NULL
+        NULL, tskIDLE_PRIORITY, NULL
     );
 
     vTaskStartScheduler();
