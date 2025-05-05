@@ -20,10 +20,18 @@ Este projeto tem como objetivo trabalhar os conceitos de execução de tarefas e
 
 ## Vídeo de Demonstração
 ```bash
-
+https://youtu.be/oqJsWmTG4Qc
 ```
 
-Além disso, este é o [relatório do projeto]() com mais detalhes da implementação.
+Além disso, este é o [relatório do projeto](https://docs.google.com/document/d/1SpsMGkHY2brc4XM7Fd_koWpEmXC7DARU/edit?usp=sharing&ouid=104431951264694328022&rtpof=true&sd=true) com mais detalhes da implementação.
+
+OBS.: O projeto foi rodado no linux. O freeRTOS é configurado no CMakeLists.txt apontando para o path do freeRTOS instalado. Pode ser que seja necessário mudar essa configuração a depender de onde o freeRTOS é instalado.
+
+
+Abaixo temos a configuração mencionada:
+```
+set(FREERTOS_KERNEL_PATH "/home/engenheiro/FreeRTOS-Kernel")
+```
 
 ## Licença
 Este projeto é licenciado sob a licença MIT – consulte o arquivo LICENSE para mais detalhes.
